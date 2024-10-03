@@ -1,4 +1,5 @@
 
+using ECommerce.APIS.Helpers;
 using ECommerce.Core.Interfaces;
 using ECommerce.Repository.Data.Contexts;
 using ECommerce.Repository.Repositories;
@@ -20,6 +21,7 @@ namespace ECommerce.APIS
 			builder.Services.AddSwaggerGen();
 			builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+			builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
 			var app = builder.Build();
 
@@ -34,10 +36,10 @@ namespace ECommerce.APIS
 				await _dbcontext.Database.MigrateAsync();
 				await StoreContextSeed.SeedAsync(_dbcontext);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				var logger = loggerFactory.CreateLogger<Program>();
-				logger.LogError(ex , "An Error Occurred During Migration");
+				logger.LogError(ex, "An Error Occurred During Migration");
 			}
 
 			// Configure the HTTP request pipeline.
@@ -51,7 +53,7 @@ namespace ECommerce.APIS
 
 			app.UseAuthorization();
 
-
+			app.UseStaticFiles();
 			app.MapControllers();
 
 			app.Run();

@@ -1,4 +1,5 @@
 ﻿using ECommerce.Core.Entities;
+using ECommerce.Core.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace ECommerce.Core.Interfaces
 	{
 		Task<T?> GetAsync(int id);
 		Task<IEnumerable<T>> GetAllAsync();
+		Task<IEnumerable<T>> GetAllWithSpecAsync(ISpecification<T> spec);
+		Task<T?> GetWithSpecAsync(ISpecification<T> spec);
 	}
 }
